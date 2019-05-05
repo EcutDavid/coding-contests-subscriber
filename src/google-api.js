@@ -45,7 +45,7 @@ class GoogleApiClient {
     this.processing = true;
     const { name, start, end, email, eventLink } = config;
 
-    var event = {
+    const event = {
       summary: name,
       description: eventLink,
       start: {

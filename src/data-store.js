@@ -3,7 +3,7 @@ const fsPromises = require("fs").promises;
 
 const { waitHalfSecond } = require("./helpers");
 
-// One simple data store
+// A simple file-based data store
 class PersistentStore {
   constructor(name) {
     this.fileName = `data-store-${name}.json`;

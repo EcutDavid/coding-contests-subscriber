@@ -55,6 +55,7 @@ class ClistClient {
               this.contests = parsedRet.objects;
             } catch (e) {
               this.logger.captureException(e);
+              return;
             }
             for (const obs of this.observers) {
               if (obs.update) {

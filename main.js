@@ -21,14 +21,17 @@ usersStore.get().then(ret => {
 });
 
 let events = [];
+let eventsLoaded = false;
 const eventsStore = new PersistentStore("events");
 eventsStore.get().then(ret => {
+  eventsLoaded = true;
   events = ret;
 });
 
 // An Observer who does the main work.
 const contestsObserver = {
   update: ret => {
+    if (!eventsLoaded) return;
     users.forEach(u => {
       const relatedEvents = events.filter(d => d.userEmail == u.email);
       ret
