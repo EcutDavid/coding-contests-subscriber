@@ -1,0 +1,22 @@
+{
+  "name": "coding-contests-subscriber",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EcutDavid/coding-contests-subscriber.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/EcutDavid/coding-contests-subscriber/issues"
+  },
+  "homepage": "https://github.com/EcutDavid/coding-contests-subscriber#readme",
+  "dependencies": {
+    "@sentry/node": "^5.1.0",
+    "googleapis": "^27.0.0"
+  }
+}
