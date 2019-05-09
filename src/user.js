@@ -1,18 +1,22 @@
-// class User {
-//   constructor(email, timeWindow) {
-//     let badTiming =
-//       timeWindow.start === undefined || timeWindow.end === undefined;
-//     if (badTiming || timeWindow.start > timeWindow.end) {
-//       throw new Error(
-//         "Provided a user with wrong time window: " + JSON.stringify(timeWindow)
-//       );
-//     }
-//     // Seems I don't need this one for now, but let's see.
-//     this.email = email;
-//     this.timeWindow = timeWindow;
-//   }
-// }
+// TODO: provide implementation that support Mongo remote instance.
+const { PersistentStore } = require("./data-store");
+
+const assert = require("assert");
+
+function validate(user) {
+  assert(user.email !== undefined, "email is not provided to the user");
+  assert(user.start !== undefined, "start time is not provided to the user");
+  assert(user.start !== undefined, "end time is not provided to the user");
+  assert(user.start < user.end, "start should be smaller than end");
+}
+
+async function getUsers() {
+  const usersStore = new PersistentStore("users");
+  let users = await usersStore.get();
+  users.forEach(validate);
+  return users;
+}
 
 module.exports = {
-  // User
+  getUsers
 };
