@@ -22,6 +22,8 @@
     "googleapis": "^27.0.0"
   },
   "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-jest": "^22.5.1",
     "jest": "^24.8.0"
   }
 }
