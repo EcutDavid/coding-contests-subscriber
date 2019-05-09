@@ -34,28 +34,28 @@ async function run() {
               console.log(`Already invited ${u.email} to ${d.event} :)`);
               return;
             }
-            googleApiClient
-              .invite({
-                name: d.event,
-                start: d.start,
-                end: d.end,
-                eventLink: d.href,
-                email: u.email
-              })
-              .then(() => {
-                events.push({
-                  userEmail: u.email,
-                  contestId: d.id
-                });
-                eventsStore.write(events);
-              });
+            // googleApiClient
+            //   .invite({
+            //     name: d.event,
+            //     start: d.start,
+            //     end: d.end,
+            //     eventLink: d.href,
+            //     email: u.email
+            //   })
+            //   .then(() => {
+            //     events.push({
+            //       userEmail: u.email,
+            //       contestId: d.id
+            //     });
+            //     eventsStore.write(events);
+            //   });
           });
       });
     }
   };
 
   clistClient.registerObserver(contestsObserver);
-  clistClient.startQuery(50000);
+  clistClient.startQuery(5000);
 }
 
 run();

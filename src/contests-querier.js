@@ -31,13 +31,16 @@ class ClistClient {
   }
 
   query(days) {
-    const now = new Date();
-    const next = new Date(now.getTime() + MS_DAY * days);
-
+    const now = new Date().toISOString();
+    const next = new Date(new Date().getTime() + MS_DAY * days).toISOString();
     https
       .get(
-        `https://clist.by/api/v1/contest/?limit=1000&start__gt=${now.toISOString()}&start__lt=${next.toISOString()}&username=davidguandev&format=json&api_key=` +
-          this.apiKey,
+        {
+          hostname: "clist.by",
+          path: `/api/v1/contest/?limit=1000&start__gt=${now}&start__lt=${next}&format=json&username=davidguandev&api_key=${
+            this.apiKey
+          }`
+        },
         res => {
           let ret = "";
           res.on("data", d => {
@@ -57,17 +60,21 @@ class ClistClient {
               this.logger.captureException(e);
               return;
             }
-            for (const obs of this.observers) {
-              if (obs.update) {
-                obs.update(this.contests);
-              }
-            }
+            this.notify();
           });
         }
       )
       .on("error", e => {
         this.logger.captureException(e);
       });
+  }
+
+  notify() {
+    for (const obs of this.observers) {
+      if (obs.update) {
+        obs.update(this.contests);
+      }
+    }
   }
 
   startQuery(interval = 1000, days = 14) {
