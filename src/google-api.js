@@ -22,8 +22,9 @@ class GoogleApiClient {
     this.printMode = true;
   }
 
-  init() {
+  init(logger) {
     this.printMode = !fs.existsSync(CREDENTIAL_PATH);
+    this.logger = logger;
     if (this.printMode) {
       return;
     }
@@ -80,7 +81,7 @@ class GoogleApiClient {
         (err, event) => {
           this.processing = false;
           if (err) {
-            console.log(
+            this.logger.captureException(
               "There was an error contacting the Calendar service: " + err
             );
             reject(err);

@@ -21,7 +21,7 @@ describe("query", () => {
     expect(httpsClient.get).toBeCalled();
   });
 
-  test("calls logger 's captureException when there is some error", () => {
+  test("calls logger's captureException when there is error", () => {
     let errorCallback;
     const getRet = {
       on: (name, cb) => {
