@@ -11,24 +11,33 @@ const SCOPES = ["https://www.googleapis.com/auth/calendar"];
 // created automatically when the authorization flow completes for the first
 // time.
 const TOKEN_PATH = "token.json";
+const CREDENTIAL_PATH = "google-credentials.json";
 
 class GoogleApiClient {
   constructor() {
     this.calendar = undefined;
     this.authedClient = undefined;
     this.processing = false;
+
+    this.printMode = true;
   }
 
   init() {
+    this.printMode = !fs.existsSync(CREDENTIAL_PATH);
+    if (this.printMode) {
+      return;
+    }
     // Load client secrets from a local file.
-    fs.readFile("credentials.json", (err, content) => {
-      if (err) return console.log("Error loading client secret file:", err);
+    try {
+      const content = fs.readFileSync(CREDENTIAL_PATH);
       // Authorize a client with credentials, then call the Google Calendar API.
       authorize(JSON.parse(content), ret => {
         this.authedClient = ret;
         this.calendar = google.calendar({ version: "v3", auth: ret });
       });
-    });
+    } catch (err) {
+      console.error("Error loading google client secret file:", err);
+    }
   }
 
   async invite(config) {

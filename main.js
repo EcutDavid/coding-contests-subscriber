@@ -1,13 +1,15 @@
+const https = require("https");
 const sentry = require("@sentry/node");
 
-const { ClistClient } = require("./src/contests-querier");
+const { ClistClient } = require("./src/clist-client");
+const { ContestsSource } = require("./src/contests-source");
 const { PersistentStore } = require("./src/data-store");
 const { googleApiClient } = require("./src/google-api");
 const { matchContest } = require("./src/helpers");
 const { Logger } = require("./src/logger");
 const { getUsers } = require("./src/user");
 
-const { CLIST_KEY, SENTRY_ID } = process.env;
+const { CLIST_KEY, CLIST_USER_NAME, SENTRY_ID } = process.env;
 
 async function run() {
   if (SENTRY_ID) {
@@ -15,7 +17,13 @@ async function run() {
     sentry.init({ dsn: sentryDsn });
   }
   const logger = new Logger(SENTRY_ID ? sentry : undefined);
-  const clistClient = new ClistClient(CLIST_KEY, logger);
+  const clistClient = new ClistClient(
+    CLIST_KEY,
+    CLIST_USER_NAME,
+    logger,
+    https
+  );
+  const contestsSource = new ContestsSource(clistClient);
   googleApiClient.init();
 
   const users = await getUsers();
@@ -54,8 +62,8 @@ async function run() {
     }
   };
 
-  clistClient.registerObserver(contestsObserver);
-  clistClient.startQuery(50000);
+  contestsSource.registerObserver(contestsObserver);
+  contestsSource.startQuery(25000);
 }
 
 run();

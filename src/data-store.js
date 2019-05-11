@@ -11,7 +11,7 @@ class PersistentStore {
 
     const exists = fs.existsSync(this.fileName);
     if (!exists) {
-      fs.writeFileSync(this.fileName, "{}");
+      fs.writeFileSync(this.fileName, "[]");
     }
   }
 

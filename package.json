@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test": "jest"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/EcutDavid/coding-contests-subscriber.git"
@@ -18,5 +20,10 @@
   "dependencies": {
     "@sentry/node": "^5.1.0",
     "googleapis": "^27.0.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-plugin-jest": "^22.5.1",
+    "jest": "^24.8.0"
   }
 }
