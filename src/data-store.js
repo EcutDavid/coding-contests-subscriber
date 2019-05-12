@@ -3,7 +3,7 @@ const fsPromises = require("fs").promises;
 
 const { waitHalfSecond } = require("./helpers");
 
-// A simple file-based data store that mocking Mongo.
+// A simple file-based data store.
 class DataStoreFileImpl {
   constructor(name) {
     this.fileName = `data-store-${name}.json`;

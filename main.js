@@ -25,12 +25,14 @@ const logger = new Logger(SENTRY_DSN ? sentry : undefined);
 const clistClient = new ClistClient(CLIST_KEY, CLIST_USER_NAME, logger, https);
 const contestsSource = new ContestsSource(clistClient);
 googleApiClient.init(logger);
-let createDataStoreImpl;
 
+// Put stuff into run to get the async sugar.
 async function run() {
+  let createDataStoreImpl;
+  // Try using mongo if possible, otherwise, the file system will be used as the data store.
   if (MONGO_CONNECTION_URL) {
     const mongoClient = new MongoClient(MONGO_CONNECTION_URL, {
-      useNewUrlParser: true // Old one is going to be deprecated.
+      useNewUrlParser: true
     });
     await mongoClient
       .connect()
@@ -61,41 +63,45 @@ async function run() {
   const eventsStore = createDataStoreImpl("events");
   const events = await eventsStore.getAll();
 
-  // An Observer who does the main work.
+  const subscribe = (contest, user) => {
+    googleApiClient
+      .invite({
+        name: contest.event,
+        start: contest.start,
+        end: contest.end,
+        eventLink: contest.href,
+        email: user.email
+      })
+      .then(() => {
+        const event = {
+          userEmail: user.email,
+          contestId: contest.id
+        };
+
+        events.push(event);
+        eventsStore.append(event);
+      });
+  };
+
   const contestsObserver = {
     update: ret => {
       users.forEach(u => {
-        const relatedEvents = events.filter(d => d.userEmail == u.email);
-        const matchedContest = ret.filter(d => matchContest(d, u));
-        matchedContest.forEach(d => {
-          if (relatedEvents.find(e => e.contestId == d.id)) {
-            console.log(`Already invited ${u.email} to ${d.event} :)`);
-            return;
-          }
-          googleApiClient
-            .invite({
-              name: d.event,
-              start: d.start,
-              end: d.end,
-              eventLink: d.href,
-              email: u.email
-            })
-            .then(() => {
-              const event = {
-                userEmail: u.email,
-                contestId: d.id
-              };
-
-              events.push(event);
-              eventsStore.append(event);
-            });
+        const handledEvents = new Set();
+        events.forEach(d => {
+          if (d.userEmail != u.email) return;
+          handledEvents.add(d.contestId);
         });
+
+        const matchedContest = ret.filter(
+          d => matchContest(d, u) && !handledEvents.has(d.id)
+        );
+        matchedContest.forEach(d => subscribe(d, u));
       });
     }
   };
 
   contestsSource.registerObserver(contestsObserver);
-  contestsSource.startQuery(55000);
+  contestsSource.startQuery(60 * 1000);
 }
 run();
 

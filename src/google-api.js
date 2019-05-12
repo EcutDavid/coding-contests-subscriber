@@ -42,12 +42,6 @@ class GoogleApiClient {
   }
 
   async invite(config) {
-    if (!this.calendar) {
-      console.log("Google client not ready, retrying");
-      setTimeout(() => this.invite(name, start, end), 1000);
-      return;
-    }
-
     // Seems Google API not very stable, so do it once a time.
     while (this.processing) {
       await waitHalfSecond(); // Currently, it's pretty okay to take a look again after 500 ms instead of 10 ms.
@@ -78,16 +72,18 @@ class GoogleApiClient {
           calendarId: "primary",
           resource: event
         },
-        (err, event) => {
+        (err, ret) => {
           this.processing = false;
           if (err) {
             this.logger.captureException(
               "There was an error contacting the Calendar service: " + err
             );
-            reject(err);
+            return reject(err);
           }
-          console.log("invite sent :)");
-          resolve(event);
+          this.logger.captureMessage(
+            `Invitation about contest ${name} is sent to ${email}`
+          );
+          resolve(ret);
         }
       );
     });
