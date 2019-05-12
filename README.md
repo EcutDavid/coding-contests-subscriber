@@ -1,4 +1,4 @@
-This tool helps us subscribing coding contests that friendly to your wake-up time, e.g., started between 8 AM - 9 PM.
+This tool helps us subscribing coding contests that friendly to our preferred time, e.g., started between 8 AM - 9 PM.
 
 Like:
 ![](https://user-images.githubusercontent.com/10692276/57193666-095c0280-6f81-11e9-8112-53b85682925d.png)
@@ -31,6 +31,6 @@ Contest Problem 671, https://projecteuler.net/news is friendly to davidguandev-t
 
 We can download the `credentials.json` via https://developers.google.com/calendar/quickstart/nodejs, please rename it to `google-credentials.json` :)
 
-3. We can provide your Sentry DSN via `SENTRY_DSN` env variable, so that logs would be sent to your Sentry project, otherwise, they would only appear in stdout and stderr.
+3. We can provide our Sentry DSN via `SENTRY_DSN` env variable, so that logs would be sent to our Sentry project, otherwise, they would only appear in stdout and stderr.
 
-4. We can provide your remote mongo connection URL via `MONGO_CONNECTION_URL` env variable, otherwise, file system will be used as the data store. The default database name is "contests-sub", we can overwrite it via `MONGO_DB_NAME` env variable.
+4. We can provide our remote mongo connection URL via `MONGO_CONNECTION_URL` env variable, otherwise, file system will be used as the data store. The default database name is "contests-sub", we can overwrite it via `MONGO_DB_NAME` env variable.
