@@ -46,13 +46,13 @@ async function run() {
         cleanUpTasks.push(() => mongoClient.close());
       })
       .catch(e => {
-        console.error(e);
+        logger.captureException(e);
         process.exit();
       });
   }
 
   if (!createDataStoreImpl) {
-    console.log(
+    logger.captureMessage(
       "Because MONGO_CONNECTION_URL is not provided, file system will be used as storage"
     );
     createDataStoreImpl = name => new DataStoreFileImpl(name);
@@ -72,7 +72,8 @@ async function run() {
         eventLink: contest.href,
         email: user.email
       })
-      .then(() => {
+      .then(ret => {
+        if (!ret.invited) return;
         const event = {
           userEmail: user.email,
           contestId: contest.id
@@ -101,7 +102,7 @@ async function run() {
   };
 
   contestsSource.registerObserver(contestsObserver);
-  contestsSource.startQuery(60 * 1000);
+  contestsSource.startQuery(10 * 60 * 1000);
 }
 run();
 
