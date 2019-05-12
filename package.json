@@ -19,7 +19,8 @@
   "homepage": "https://github.com/EcutDavid/coding-contests-subscriber#readme",
   "dependencies": {
     "@sentry/node": "^5.1.0",
-    "googleapis": "^27.0.0"
+    "googleapis": "^27.0.0",
+    "mongodb": "^3.2.4"
   },
   "devDependencies": {
     "eslint": "^5.16.0",

@@ -5,9 +5,17 @@ class Logger {
 
   captureException(error) {
     if (this.sentry) {
-      this.sentry(error);
+      this.sentry.captureException(error);
     } else {
-      console.error();
+      console.error(error);
+    }
+  }
+
+  captureMessage(msg) {
+    if (this.sentry) {
+      this.sentry.captureMessage(msg);
+    } else {
+      console.log(msg);
     }
   }
 }
