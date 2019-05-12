@@ -35,6 +35,7 @@ class ContestsSource {
   }
 
   startQuery(interval = 1000, days = 14) {
+    this.query(days);
     this.timerId = setInterval(() => {
       this.query(days);
     }, interval);

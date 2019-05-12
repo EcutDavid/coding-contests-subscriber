@@ -26,6 +26,9 @@ class GoogleApiClient {
     this.printMode = !fs.existsSync(CREDENTIAL_PATH);
     this.logger = logger;
     if (this.printMode) {
+      logger.captureMessage(
+        `Because ${CREDENTIAL_PATH} is not found, the contests will just be printed instead of being used for sending calendar events.`
+      );
       return;
     }
     // Load client secrets from a local file.
@@ -37,7 +40,7 @@ class GoogleApiClient {
         this.calendar = google.calendar({ version: "v3", auth: ret });
       });
     } catch (err) {
-      console.error("Error loading google client secret file:", err);
+      logger.captureException(err);
     }
   }
 
@@ -46,9 +49,16 @@ class GoogleApiClient {
     while (this.processing) {
       await waitHalfSecond(); // Currently, it's pretty okay to take a look again after 500 ms instead of 10 ms.
     }
-    this.processing = true;
     const { name, start, end, email, eventLink } = config;
 
+    if (this.printMode) {
+      this.logger.captureMessage(
+        `Contest ${name}, ${eventLink} is friendly to ${email}`
+      );
+      return Promise.resolve();
+    }
+
+    this.processing = true;
     const event = {
       summary: name,
       description: eventLink,
@@ -83,7 +93,7 @@ class GoogleApiClient {
           this.logger.captureMessage(
             `Invitation about contest ${name} is sent to ${email}`
           );
-          resolve(ret);
+          resolve({ invited: true });
         }
       );
     });

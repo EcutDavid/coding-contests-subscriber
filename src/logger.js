@@ -4,18 +4,16 @@ class Logger {
   }
 
   captureException(error) {
+    console.error(error);
     if (this.sentry) {
       this.sentry.captureException(error);
-    } else {
-      console.error(error);
     }
   }
 
   captureMessage(msg) {
+    console.log(msg);
     if (this.sentry) {
       this.sentry.captureMessage(msg);
-    } else {
-      console.log(msg);
     }
   }
 }

@@ -11,6 +11,12 @@
 // }
 class ClistClient {
   constructor(apiKey, userName, logger, httpsClient) {
+    if (!apiKey || !userName) {
+      logger.captureException(
+        `Clist client need both key and user name to work`
+      );
+      process.exit(0);
+    }
     this.userName = userName;
     this.apiKey = apiKey;
     this.logger = logger;
