@@ -6,7 +6,7 @@ const { ClistClient } = require("./src/clist-client");
 const { ContestsSource } = require("./src/contests-source");
 const { DataStoreFileImpl, DataStoreMongoImpl } = require("./src/data-store");
 const { googleApiClient } = require("./src/google-api");
-const { matchContest } = require("./src/helpers");
+const { maybeAddSomeUsers, matchContest } = require("./src/helpers");
 const { Logger } = require("./src/logger");
 
 const {
@@ -58,10 +58,11 @@ async function run() {
     createDataStoreImpl = name => new DataStoreFileImpl(name);
   }
 
-  const usersStore = createDataStoreImpl("users");
-  const users = await usersStore.getAll();
-  const eventsStore = createDataStoreImpl("events");
-  const events = await eventsStore.getAll();
+  const userStore = createDataStoreImpl("users");
+  const users = await userStore.getAll();
+  await maybeAddSomeUsers(users, userStore, logger);
+  const eventStore = createDataStoreImpl("events");
+  const events = await eventStore.getAll();
 
   const subscribe = (contest, user) => {
     googleApiClient
@@ -80,7 +81,7 @@ async function run() {
         };
 
         events.push(event);
-        eventsStore.append(event);
+        eventStore.append(event);
       });
   };
 
