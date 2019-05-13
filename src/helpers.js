@@ -45,7 +45,7 @@ async function maybeAddSomeUsers(users, usersStore, logger) {
   while (ret == "y") {
     let user = {};
     ret = await askQuestion(USER_EMAIL_PROMPT);
-    // Not checking email syntax for now
+    // Not checking email syntax for now.
     if (ret == "") {
       logger.captureException("Email cannot be empty");
       process.exit();
@@ -59,6 +59,7 @@ async function maybeAddSomeUsers(users, usersStore, logger) {
     const timeZone = Number.parseInt(ret);
 
     for (const num of [users.start, users.end, timeZone]) {
+      // Not checking other criteria for now.
       if (!Number.isNaN(num)) continue;
       logger.captureException("Parsing start/end time failed");
       process.exit();
