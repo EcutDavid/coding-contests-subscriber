@@ -71,7 +71,7 @@ async function maybeAddSomeUsers(users, usersStore, logger) {
       user.start += 24;
       user.end += 24;
     }
-    logger.captureMessage(`Adding user ${JSON.stringify(user)}`);
+    logger.captureMessage(`Adding user ${user.email}`);
     await usersStore.append(user);
     users.push(user);
 

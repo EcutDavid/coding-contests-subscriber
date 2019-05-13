@@ -37,7 +37,7 @@ Email: davidguandev@gmail.com
 Preferred earliest start hour(0 - 23, integer): 8
 Preferred latest start hour(0 - 23, integer): 20
 Timezone in UTC(-12 - 12): 10
-Adding user {"email":"davidguandev@gmail.com","start":-2,"end":10}
+Adding user davidguandev@gmail.com
 Add a new user?(Y/N):
 ```
 
