@@ -11,8 +11,10 @@ describe("matchContest", () => {
     const userB = { start: nowInUTCHour + 1, end: nowInUTCHour + 2 };
     expect(matchContest(contest, userB)).toBeFalsy();
 
-    // "The cross day" case.
     const userC = { start: 23, end: 27 }; //toBeTruthy
-    expect(matchContest({ start: 1 }, userC)).toBeTruthy();
+    const crossDayCase = {
+      start: new Date("December 1, 2000, 2:0:0 GMT+0:00")
+    };
+    expect(matchContest(crossDayCase, userC)).toBeTruthy();
   });
 });

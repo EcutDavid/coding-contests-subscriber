@@ -66,6 +66,10 @@ async function maybeAddSomeUsers(users, usersStore, logger) {
 
     user.start -= timeZone;
     user.end -= timeZone;
+    if (user.start < 0) {
+      user.start += 24;
+      user.end += 24;
+    }
     logger.captureMessage(`Adding user ${JSON.stringify(user)}`);
     await usersStore.append(user);
     users.push(user);
