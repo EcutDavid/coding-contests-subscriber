@@ -20,7 +20,7 @@ Like:
 CLIST_KEY=foo CLIST_USER_NAME=bar node main.js
 ```
 
-2. We have to provide the basic user/users information so that it can filter the contests, we don't have to modify the data store directly since this tool will repeatedly ask us to add new users until we tell `N`.
+2. We have to provide the basic user/users information so that contests can be filtered. This tool will ask us to add new users(so we don't have to modify the data store directly).
 
 ```
 ... node main.js

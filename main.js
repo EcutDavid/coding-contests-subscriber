@@ -94,11 +94,6 @@ async function run() {
           handledEvents.add(d.contestId);
         });
 
-        for (const d of ret) {
-          if (handledEvents.has(d.id)) {
-            console.log(`already handled ${d.id}`);
-          }
-        }
         const matchedContest = ret.filter(
           d => matchContest(d, u) && !handledEvents.has(d.id)
         );
