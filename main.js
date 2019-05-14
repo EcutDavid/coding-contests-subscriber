@@ -23,7 +23,7 @@ if (SENTRY_DSN) {
 }
 const logger = new Logger(SENTRY_DSN ? sentry : undefined);
 const clistClient = new ClistClient(CLIST_KEY, CLIST_USER_NAME, logger, https);
-const contestsSource = new ContestsSource(clistClient);
+const contestsSource = new ContestsSource(clistClient, logger);
 googleApiClient.init(logger);
 
 // Put stuff into run to get the async sugar.
@@ -103,7 +103,7 @@ async function run() {
   };
 
   contestsSource.registerObserver(contestsObserver);
-  contestsSource.startQuery(10 * 60 * 1000);
+  contestsSource.startQuery(30 * 60 * 1000);
 }
 run();
 

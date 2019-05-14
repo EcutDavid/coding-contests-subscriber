@@ -1,8 +1,9 @@
 const MS_DAY = 1000 * 60 * 60 * 24;
 
 class ContestsSource {
-  constructor(clistClient) {
+  constructor(clistClient, logger) {
     this.clistClient = clistClient;
+    this.logger = logger;
 
     this.timerId = null;
     this.contests = [];
@@ -18,6 +19,7 @@ class ContestsSource {
   }
 
   query(days) {
+    this.logger.captureMessage("Starting a new round of query");
     const now = new Date();
     const next = new Date(new Date().getTime() + MS_DAY * days);
     this.clistClient.query(now, next, ret => {
