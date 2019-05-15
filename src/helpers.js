@@ -67,10 +67,13 @@ async function maybeAddSomeUsers(users, usersStore, logger) {
 
     user.start -= timeZone;
     user.end -= timeZone;
+
+    // Mapping the [-12, 35] to [0, 47], so less trouble later on in filtering contest.
     if (user.start < 0) {
       user.start += 24;
       user.end += 24;
     }
+
     logger.captureMessage(`Adding user ${user.email}`);
     await usersStore.append(user);
     users.push(user);
