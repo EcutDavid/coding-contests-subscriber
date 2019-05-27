@@ -6,7 +6,7 @@ Like:
 ## How it works
 
 1. Fetching the available contests via [clist](https://clist.by/).
-1. Filtering the contests based on the time window.
+1. Filtering the contests based on the time window(contest longer than one day will not be filtered for now).
 1. Sending invites via [google calendar API](https://developers.google.com/calendar/).
 1. Store contests that successfully sent, so same contest won't be notified twice.
 

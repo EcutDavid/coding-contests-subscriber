@@ -15,6 +15,10 @@ async function askQuestion(query) {
 }
 
 function matchContest(contest, user) {
+  // Contest longer than one day currently always matches.
+  if (contest.duration && contest.duration / 60 / 60 > 24) {
+    return true;
+  }
   let startTimeInUTC = new Date(contest.start).getUTCHours();
   // Handle the case that a user's timing being normalized to "cross day".
   if (user.end >= 24) {
