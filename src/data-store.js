@@ -1,7 +1,7 @@
 const fs = require("fs");
 const fsPromises = require("fs").promises;
 
-const { waitHalfSecond } = require("./helpers");
+const { waitFiveMs } = require("./helpers");
 
 // A simple file-based data store.
 class DataStoreFileImpl {
@@ -18,7 +18,7 @@ class DataStoreFileImpl {
   // TODO: error handling.
   async getAll() {
     while (this.processing) {
-      await waitHalfSecond(); // Currently, it's pretty okay to take a look again after 500 ms instead of 10 ms.
+      await waitFiveMs();
     }
     this.processing = true;
     const rawDocument = await fsPromises.readFile(this.fileName);
@@ -29,7 +29,7 @@ class DataStoreFileImpl {
 
   async append(row) {
     while (this.processing) {
-      await waitHalfSecond();
+      await waitFiveMs();
     }
     this.processing = true;
     const content = JSON.parse(await fsPromises.readFile(this.fileName));
@@ -49,7 +49,7 @@ class DataStoreMongoImpl {
 
   async getAll() {
     while (this.processing) {
-      await waitHalfSecond();
+      await waitFiveMs();
     }
     this.processing = true;
     const ret = await this.collection.find().toArray();
@@ -59,7 +59,7 @@ class DataStoreMongoImpl {
 
   async append(row) {
     while (this.processing) {
-      await waitHalfSecond();
+      await waitFiveMs();
     }
     this.processing = true;
     await this.collection.insertOne(row);

@@ -23,9 +23,9 @@ function matchContest(contest, user) {
   return startTimeInUTC >= user.start && startTimeInUTC <= user.end;
 }
 
-async function waitHalfSecond() {
+async function waitFiveMs() {
   return new Promise(res => {
-    setTimeout(() => res(), 500);
+    setTimeout(() => res(), 5);
   });
 }
 
@@ -85,5 +85,5 @@ async function maybeAddSomeUsers(users, usersStore, logger) {
 module.exports = {
   maybeAddSomeUsers,
   matchContest,
-  waitHalfSecond
+  waitFiveMs
 };

@@ -3,7 +3,7 @@ const fs = require("fs");
 const readline = require("readline");
 const { google } = require("googleapis");
 
-const { waitHalfSecond } = require("./helpers");
+const { waitFiveMs } = require("./helpers");
 
 // If modifying these scopes, delete token.json.
 const SCOPES = ["https://www.googleapis.com/auth/calendar"];
@@ -47,7 +47,7 @@ class GoogleApiClient {
   async invite(config) {
     // Seems Google API not very stable, so do it once a time.
     while (this.processing) {
-      await waitHalfSecond(); // Currently, it's pretty okay to take a look again after 500 ms instead of 10 ms.
+      await waitFiveMs();
     }
     const { name, start, end, email, eventLink } = config;
 
